@@ -1,0 +1,208 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id            String    @id
+  name          String
+  email         String
+  emailVerified Boolean
+  image         String?
+  createdAt     DateTime
+  updatedAt     DateTime
+  sessions      Session[]
+  accounts      Account[]
+  role          String    @default("USER")
+  
+  // New Goal & Subscription Fields
+  targetWeight      Float?
+  currentWeight     Float?
+  height            Float?
+  age               Int?
+  gender            String?   // "male", "female"
+  activityLevel     String?   // "sedentary", "light", "moderate", "active", "very_active"
+  targetShape       String?
+  subscriptionStatus String   @default("TRIAL")
+  subscriptionEndDate DateTime?
+  stripeCustomerId   String?   @unique
+  
+  runningStats   RunningStat[]
+  nutritionPlans NutritionPlan[]
+  workouts       Workout[]
+  workoutLogs    WorkoutLog[]
+  weightEntries  WeightEntry[]
+  bugReports     BugReport[]
+
+  @@unique([email])
+  @@map("user")
+}
+
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String
+  createdAt DateTime
+  updatedAt DateTime
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([token])
+  @@index([userId])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime
+  updatedAt             DateTime
+
+  @@index([userId])
+  @@map("account")
+}
+
+model Verification {
+  id         String    @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime?
+  updatedAt  DateTime?
+
+  @@map("verification")
+}
+
+model RunningStat {
+  id           String   @id @default(cuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  distanceKm   Float
+  durationMins Int
+  workoutDate  DateTime @default(now())
+
+  @@index([userId, workoutDate])
+  @@map("running_stat")
+}
+
+model NutritionPlan {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name      String?
+  mealType  String   // "Breakfast", "Lunch", "Dinner", "Snack"
+  calories  Int
+  protein   Int
+  carbs     Int
+  fat       Int
+  items     String?  // Description or list of items
+  createdAt DateTime @default(now())
+
+  @@index([userId, createdAt])
+  @@map("nutrition_plan")
+}
+
+model Exercise {
+  id          String   @id @default(cuid())
+  externalId  Int?     @unique
+  name        String
+  category    String   // e.g., "Free Weights", "Weight Machines", "Bodyweight"
+  description String?
+  image       String?
+  equipment   String?
+  workouts    Workout[] @relation("WorkoutToExercise")
+
+  @@map("exercise")
+}
+
+model Workout {
+  id          String     @id @default(cuid())
+  userId      String
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name        String
+  intensity   String     // "Light", "Medium", "Intense"
+  category    String     // "Free Weights", "Weight Machines"
+  exercises   Exercise[] @relation("WorkoutToExercise")
+  createdAt   DateTime   @default(now())
+  logs        WorkoutLog[]
+
+  @@index([userId, createdAt(sort: Desc)])
+  @@map("workout")
+}
+
+model WorkoutLog {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  workoutId   String
+  workout     Workout  @relation(fields: [workoutId], references: [id], onDelete: Cascade)
+  results     Json     // Array of {exerciseId: string, weight: number, completed: boolean}
+  createdAt   DateTime @default(now())
+
+  @@index([userId, createdAt])
+  @@map("workout_log")
+}
+
+model FoodProduct {
+  id          String   @id @default(cuid())
+  externalId  String?  @unique // Open Food Facts ID or barcode
+  name        String
+  brand       String?
+  calories    Int
+  protein     Float    @default(0)
+  carbs       Float    @default(0)
+  fat         Float    @default(0)
+  image       String?
+  category    String?  // e.g., "Dairy", "Meat", "Grains"
+  isCommon    Boolean  @default(false) // For pre-seeded popular items
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([name])
+  @@map("food_product")
+}
+
+model WeightEntry {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  weight    Float
+  date      DateTime @default(now())
+  
+  @@index([userId, date])
+  @@map("weight_entry")
+}
+
+model BugReport {
+  id          String   @id @default(cuid())
+  userId      String?
+  user        User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  title       String
+  description String
+  pageUrl     String?
+  userAgent   String?
+  status      String   @default("PENDING") // PENDING, INVESTIGATING, RESOLVED, IGNORED
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([userId])
+  @@map("bug_report")
+}

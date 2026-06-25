@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Fitness Planner - Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600&amp;family=Playfair+Display:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary-fixed-dim": "#c5c7c4",
+                    "secondary": "#5f5e5b",
+                    "surface-container-high": "#e8e8e5",
+                    "surface-dim": "#dadad7",
+                    "primary-fixed-dim": "#aacfba",
+                    "on-tertiary-fixed": "#191c1b",
+                    "on-background": "#1a1c1a",
+                    "surface-tint": "#446554",
+                    "surface-container-highest": "#e3e3e0",
+                    "surface-variant": "#e3e3e0",
+                    "primary-fixed": "#c6ebd5",
+                    "on-error": "#ffffff",
+                    "on-error-container": "#93000a",
+                    "inverse-primary": "#aacfba",
+                    "background": "#faf9f6",
+                    "secondary-fixed": "#e5e2dd",
+                    "on-tertiary-fixed-variant": "#444745",
+                    "surface-container": "#eeeeeb",
+                    "tertiary-fixed": "#e1e3e0",
+                    "on-primary-container": "#f5fff7",
+                    "on-primary-fixed-variant": "#2c4d3d",
+                    "on-surface-variant": "#414844",
+                    "on-secondary-container": "#656461",
+                    "surface-bright": "#faf9f6",
+                    "on-secondary": "#ffffff",
+                    "surface": "#faf9f6",
+                    "on-tertiary-container": "#fbfdfa",
+                    "error": "#ba1a1a",
+                    "surface-container-low": "#f4f4f1",
+                    "on-tertiary": "#ffffff",
+                    "on-secondary-fixed-variant": "#474743",
+                    "tertiary": "#5a5d5a",
+                    "outline": "#727973",
+                    "outline-variant": "#c1c8c2",
+                    "primary-container": "#5a7c6a",
+                    "primary": "#416352",
+                    "inverse-surface": "#2f312f",
+                    "surface-container-lowest": "#ffffff",
+                    "on-primary-fixed": "#002114",
+                    "inverse-on-surface": "#f1f1ee",
+                    "secondary-fixed-dim": "#c9c6c2",
+                    "error-container": "#ffdad6",
+                    "on-secondary-fixed": "#1c1c19",
+                    "on-primary": "#ffffff",
+                    "secondary-container": "#e5e2dd",
+                    "tertiary-container": "#727573",
+                    "on-surface": "#1a1c1a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "1rem",
+                    "lg": "2rem",
+                    "xl": "3rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-mobile": "20px",
+                    "unit": "8px",
+                    "section-gap": "80px",
+                    "margin-desktop": "64px",
+                    "gutter": "24px",
+                    "container-max": "1200px"
+            },
+            "fontFamily": {
+                    "body-lg": ["Manrope"],
+                    "label-md": ["Manrope"],
+                    "body-md": ["Manrope"],
+                    "headline-sm": ["Playfair Display"],
+                    "display-lg-mobile": ["Playfair Display"],
+                    "headline-md": ["Playfair Display"],
+                    "display-lg": ["Playfair Display"]
+            },
+            "fontSize": {
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "headline-sm": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                    "display-lg-mobile": ["36px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "headline-md": ["32px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "display-lg": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 10px 30px -10px rgba(65, 72, 68, 0.04);
+        }
+        .soft-shadow {
+            box-shadow: 0 10px 30px -10px rgba(65, 72, 68, 0.04);
+        }
+        .progress-ring__circle {
+            transition: stroke-dashoffset 0.8s ease-in-out;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md antialiased overflow-x-hidden">
+<!-- TopAppBar -->
+<header class="bg-background dark:bg-background docked full-width top-0 ml-64 border-b border-surface-variant dark:border-surface-variant flex justify-between items-center h-16 px-gutter w-[calc(100%-16rem)] z-50 fixed">
+<div class="font-headline-md text-headline-md font-extrabold text-primary dark:text-primary">
+            Fitness Planner
+        </div>
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary transition-colors scale-105 transition-transform duration-200">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">notifications</span>
+</button>
+<button class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary transition-colors scale-105 transition-transform duration-200">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">account_circle</span>
+</button>
+</div>
+</header>
+<!-- SideNavBar -->
+<nav class="bg-surface dark:bg-surface text-primary dark:text-primary h-screen w-64 fixed left-0 top-0 border-r border-surface-variant dark:border-surface-variant flex flex-col h-full py-base z-50 overflow-y-auto">
+<div class="px-6 py-8 mb-4">
+<div class="flex items-center gap-4 mb-8">
+<div class="w-12 h-12 rounded-full overflow-hidden border-2 border-primary-container">
+<img alt="User profile from LINE" class="w-full h-full object-cover" data-alt="A serene, professional portrait of a woman in a bright, sun-drenched minimalist studio. Soft, natural lighting. Sage green and warm cream tones. High-end boutique fitness aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAXoVzgo7YGuv5ysUYWDvOYZ-bunbA7af1SquRUmNfyoVhmWdnwE9xqg-s7nOo8d0BFOmGtgn0_Cd6vC8ANKP7qrWBhzVlJl4KuWpqJADlM5trTayF61UBAZIEQPu_C4Yx_CytYSMiX2DPTz-U5Hv_7914tEfAf0wijFPhIOpbxojSbnnG8vwhKBxNiKK_MRd6UO67e5OlMxvmn2M4OEi6mon3AXfztvydML3_arV-elpFFw4QhmuP1XeYfKYLDnKoOC20J1CbHzeS9"/>
+</div>
+<div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Hello, Sarah</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Active Focus Mode</p>
+</div>
+</div>
+<button class="w-full bg-primary text-on-primary rounded-full py-3 px-6 font-label-md text-label-md flex items-center justify-center gap-2 hover:bg-surface-tint transition-colors mb-8 shadow-sm">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+                Start Workout
+            </button>
+<ul class="space-y-2">
+<li>
+<a class="flex items-center gap-4 py-3 text-primary dark:text-primary font-bold border-l-4 border-primary pl-4 bg-surface-container-low rounded-r-xl" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-4 py-3 text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface pl-4 hover:bg-surface-container-high dark:hover:bg-surface-container-high transition-colors duration-200 rounded-r-xl" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">fitness_center</span>
+<span class="font-label-md text-label-md">Workouts</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-4 py-3 text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface pl-4 hover:bg-surface-container-high dark:hover:bg-surface-container-high transition-colors duration-200 rounded-r-xl" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">monitoring</span>
+<span class="font-label-md text-label-md">Progress</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-4 py-3 text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface pl-4 hover:bg-surface-container-high dark:hover:bg-surface-container-high transition-colors duration-200 rounded-r-xl" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">payments</span>
+<span class="font-label-md text-label-md">Subscription</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-4 py-3 text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface pl-4 hover:bg-surface-container-high dark:hover:bg-surface-container-high transition-colors duration-200 rounded-r-xl" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">settings</span>
+<span class="font-label-md text-label-md">Settings</span>
+</a>
+</li>
+</ul>
+</div>
+<div class="mt-auto px-6 py-8">
+<ul class="space-y-2">
+<li>
+<a class="flex items-center gap-4 py-3 text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface pl-4 hover:bg-surface-container-high dark:hover:bg-surface-container-high transition-colors duration-200 rounded-r-xl" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">help</span>
+<span class="font-label-md text-label-md">Help</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-4 py-3 text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface pl-4 hover:bg-surface-container-high dark:hover:bg-surface-container-high transition-colors duration-200 rounded-r-xl" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">logout</span>
+<span class="font-label-md text-label-md">Logout</span>
+</a>
+</li>
+</ul>
+</div>
+</nav>
+<!-- Main Content -->
+<main class="ml-64 mt-16 p-margin-desktop min-h-screen">
+<div class="max-w-container-max mx-auto">
+<div class="mb-12">
+<h1 class="font-display-lg text-display-lg text-on-background mb-2">Today's Overview</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Stay focused, stay serene.</p>
+</div>
+<!-- Bento Grid -->
+<div class="grid grid-cols-12 gap-gutter mb-section-gap">
+<!-- Progress Circular Chart -->
+<div class="col-span-12 lg:col-span-4 bg-surface-lowest rounded-xl p-8 soft-shadow flex flex-col items-center justify-center relative overflow-hidden group hover:-translate-y-1 transition-transform duration-300">
+<div class="absolute inset-0 bg-gradient-to-br from-primary-fixed/20 to-transparent opacity-50"></div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-6 relative z-10 w-full text-center">Daily Goal</h3>
+<div class="relative w-48 h-48 flex items-center justify-center z-10">
+<svg class="w-full h-full" viewbox="0 0 100 100">
+<circle class="text-surface-container-high stroke-current" cx="50" cy="50" fill="transparent" r="40" stroke-width="8"></circle>
+<circle class="text-primary stroke-current progress-ring__circle" cx="50" cy="50" fill="transparent" r="40" stroke-dasharray="251.2" stroke-dashoffset="75.36" stroke-linecap="round" stroke-width="8"></circle>
+</svg>
+<div class="absolute flex flex-col items-center">
+<span class="font-display-lg-mobile text-display-lg-mobile text-primary">70%</span>
+<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest mt-1">Complete</span>
+</div>
+</div>
+</div>
+<!-- Daily Summary Cards -->
+<div class="col-span-12 lg:col-span-8 grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<div class="bg-surface rounded-xl p-6 soft-shadow flex flex-col justify-between hover:bg-surface-container-low transition-colors group">
+<div class="w-12 h-12 rounded-full bg-primary-fixed flex items-center justify-center mb-4 text-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface-variant mb-1">Calories</p>
+<p class="font-headline-md text-headline-md text-on-surface">1,840</p>
+</div>
+</div>
+<div class="bg-surface rounded-xl p-6 soft-shadow flex flex-col justify-between hover:bg-surface-container-low transition-colors group">
+<div class="w-12 h-12 rounded-full bg-primary-fixed flex items-center justify-center mb-4 text-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">timer</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface-variant mb-1">Active Time</p>
+<p class="font-headline-md text-headline-md text-on-surface">45 mins</p>
+</div>
+</div>
+<div class="bg-surface rounded-xl p-6 soft-shadow flex flex-col justify-between hover:bg-surface-container-low transition-colors group">
+<div class="w-12 h-12 rounded-full bg-primary-fixed flex items-center justify-center mb-4 text-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">water_drop</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface-variant mb-1">Water Intake</p>
+<p class="font-headline-md text-headline-md text-on-surface">2.4L</p>
+</div>
+</div>
+<!-- AI Trainer Banner -->
+<div class="col-span-1 md:col-span-3 rounded-xl overflow-hidden relative soft-shadow group min-h-[160px] flex items-center">
+<div class="absolute inset-0 z-0">
+<img alt="Premium gym equipment" class="w-full h-full object-cover opacity-80" data-alt="A beautifully lit, high-end boutique fitness studio with minimal equipment. Soft natural sunlight streaming across light wood floors and cream walls. Sage green accents. Serene, focused wellness atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBQkj1cg4SaCjBD4LZjIMMwLCAGfNH9lrtFhrEPuA6NQvTyY0q9VxCT7SuTWJuwL2y_hjGg26TNaNb2viYeF-FbrhCQfGSnJeKwjG5xES46ofQvXmXRuih4N6Ezr7Llsq5FqWJC37yoxomeNLs0wcQhlrzsPIjP7yFRdP9aWgUrQgMsuDdqSDL3eRb2OPYpjw9mdDmy7s8TlpGKeIUMXAK8BSevBOTVyuUOhAXg7QLBf2U2H4LwJpTQHYDzPqZWohLaHkP_uoBHlc9g"/>
+<div class="absolute inset-0 bg-gradient-to-r from-surface-tint/90 to-surface-tint/40 mix-blend-multiply"></div>
+</div>
+<div class="relative z-10 p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between w-full gap-6">
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-primary mb-2 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-fixed" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+                                    Premium AI Trainer
+                                </h3>
+<p class="font-body-md text-body-md text-on-primary/80 max-w-md">Unlock personalized, adaptive workout routines tailored to your daily energy levels and recovery data.</p>
+</div>
+<button class="bg-primary-fixed text-on-primary-fixed font-label-md text-label-md px-6 py-3 rounded-full hover:bg-surface-container-highest transition-colors whitespace-nowrap">
+                                Unlock Now
+                            </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Two Column Layout below -->
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Schedule List -->
+<div class="col-span-12 lg:col-span-8 bg-surface rounded-xl p-8 soft-shadow">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Today's Schedule</h3>
+<div class="bg-primary-container/20 text-on-primary-container px-3 py-1 rounded-full font-label-md text-label-md">
+                            2/4 Complete
+                        </div>
+</div>
+<div class="space-y-4">
+<!-- Item 1 (Complete) -->
+<div class="flex items-center p-4 rounded-lg bg-surface-container-low border border-surface-variant/50 opacity-60">
+<div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-on-primary mr-4 shrink-0">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+<div class="flex-grow">
+<p class="font-body-lg text-body-lg text-on-surface line-through decoration-on-surface-variant/50">Warm-up Mobility</p>
+<p class="font-body-md text-body-md text-on-surface-variant">15 mins • Light</p>
+</div>
+</div>
+<!-- Item 2 (Complete) -->
+<div class="flex items-center p-4 rounded-lg bg-surface-container-low border border-surface-variant/50 opacity-60">
+<div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-on-primary mr-4 shrink-0">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+<div class="flex-grow">
+<p class="font-body-lg text-body-lg text-on-surface line-through decoration-on-surface-variant/50">Bench Press</p>
+<p class="font-body-md text-body-md text-on-surface-variant">4 sets x 8 reps • Heavy</p>
+</div>
+</div>
+<!-- Item 3 (Active) -->
+<div class="flex items-center p-4 rounded-lg bg-surface border-l-4 border-primary shadow-sm">
+<div class="w-8 h-8 rounded-full border-2 border-primary flex items-center justify-center text-primary mr-4 shrink-0">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 0;">radio_button_unchecked</span>
+</div>
+<div class="flex-grow">
+<p class="font-body-lg text-body-lg text-on-surface font-semibold">Lat Pulldowns</p>
+<p class="font-body-md text-body-md text-on-surface-variant">3 sets x 12 reps • Moderate</p>
+</div>
+<button class="text-primary hover:bg-primary-fixed/30 p-2 rounded-full transition-colors">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">play_circle</span>
+</button>
+</div>
+<!-- Item 4 (Upcoming) -->
+<div class="flex items-center p-4 rounded-lg bg-surface-container-lowest border border-surface-variant border-dashed">
+<div class="w-8 h-8 rounded-full border-2 border-surface-variant flex items-center justify-center text-surface-variant mr-4 shrink-0">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 0;">lock_clock</span>
+</div>
+<div class="flex-grow">
+<p class="font-body-lg text-body-lg text-on-surface-variant">Plank Hold</p>
+<p class="font-body-md text-body-md text-on-surface-variant/70">3 sets x 60 sec • Core</p>
+</div>
+</div>
+</div>
+</div>
+<!-- LINE Connect Widget -->
+<div class="col-span-12 lg:col-span-4 bg-[#00B900]/5 rounded-xl p-8 soft-shadow border border-[#00B900]/20 flex flex-col justify-center items-center text-center">
+<div class="w-16 h-16 rounded-2xl bg-[#00B900] text-white flex items-center justify-center mb-6 shadow-lg shadow-[#00B900]/20">
+<svg class="w-10 h-10" fill="currentColor" viewbox="0 0 24 24">
+<path d="M24 10.304c0-5.369-5.383-9.738-12-9.738-6.616 0-12 4.369-12 9.738 0 4.814 4.269 8.846 10.036 9.608.391.084.922.258 1.057.592.122.301.079.764.038 1.07l-.164.991c-.053.32-.249 1.258 1.103.688 1.352-.57 7.305-4.304 9.873-7.256 1.378-1.579 2.057-3.418 2.057-5.693z"></path>
+</svg>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-2">Connected to LINE</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">Your daily summaries and gentle reminders are being synced seamlessly.</p>
+<button class="bg-surface text-on-surface border border-outline-variant font-label-md text-label-md px-6 py-2 rounded-full hover:bg-surface-container-low transition-colors w-full">
+                        Manage Settings
+                    </button>
+</div>
+</div>
+</div>
+</main>
+</body></html>
